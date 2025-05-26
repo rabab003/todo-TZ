@@ -1,0 +1,49 @@
+* {
+  background: rgb(50, 7, 150);
+}
+
+.iconBtn {
+  transition: all 0.2s !important;
+}
+.todoCard {
+  transition: all 0.3s !important;
+}
+
+.iconBtn:hover {
+  background-color: rgb(58, 58, 58) !important;
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4);
+}
+
+.todoCard:hover {
+  /* margin-top: 20px; */
+  margin-bottom: 20px;
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4);
+}
+
+/* ==== custom fonts ====*/
+
+@font-face {
+  font-family: fontTen;
+  src: url("../public/font/Almarai-Light.ttf");
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: fontTen;
+  src: url("../public/font/Almarai-Regular.ttf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: fontTen;
+  src: url("../public/font/Almarai-Bold.ttf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: fontTen;
+  src: url("../public/font/Almarai-ExtraBold.ttf");
+  font-weight: 900;
+}
+
+/* ==== custom fonts ====*/
