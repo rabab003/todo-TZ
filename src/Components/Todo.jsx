@@ -13,21 +13,39 @@ import EditIcon from '@mui/icons-material/Edit';
 
 
 
-export default function Todo() {
+export default function Todo({todo, handelCheck}) {
+  function handelCheckClick(){
+    handelCheck(todo.id)
+
+  }
   return (
     <div>
-           <Card className='todoCard' sx={{minWidth:275,  color:"white", marginTop:5}} variant="outlined">
+          <Card className='todoCard' sx={{minWidth:275,  color:"white", marginTop:5}} variant="outlined">
                   <CardContent>
                     <Grid container spacing={1}>
-                         <Grid  size={8}>
-                       <Typography style={{textAlign:"left"}} variant='h5' gutterBottom>my tasks</Typography>
-                       <Typography style={{textAlign:"left"}} variant='h7' gutterBottom>the details about tasks</Typography>
+
+                       <Grid  size={8}>
+                       <Typography style={{textAlign:"left"}} variant='h5' gutterBottom>{todo.title}</Typography>
+                       <Typography style={{textAlign:"right"}} variant='h7' gutterBottom>{todo.details}</Typography>
                             
                          </Grid>
                          <Grid display={'flex'} justifyContent={"space-around"} alignItems={"center"} size={4}>
                             {/* action buttons */}
+                            <IconButton 
+                            onClick={()=>{
+                              handelCheckClick()
+                            }}
+                            className='iconBtn'
+                             aria-label="delete" 
+                             style={{
+                              background:todo.isCompleted ?"black": "White",
+                              // color:"#8bc34a",
+                              color:todo.isCompleted ? "#8bc34a": "White",
 
-                            <IconButton className='iconBtn' aria-label="delete" style={{color:"#8bc34a",border:"solid #8bc34a 3px "}}>
+                              border:"solid #8bc34a 3px "
+                              
+                              }}>
+                            
                                <CheckIcon />
                             </IconButton>
                             <IconButton className='iconBtn' aria-label="delete" style={{color:"blue",border:"solid blue 3px "}}>

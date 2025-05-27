@@ -24,26 +24,26 @@
 
 @font-face {
   font-family: fontTen;
-  src: url("../public/font/Almarai-Light.ttf");
+  src: url("../public/font/FiraSans-Thin.ttf");
   font-weight: 100;
 }
 
 @font-face {
   font-family: fontTen;
-  src: url("../public/font/Almarai-Regular.ttf");
+  src: url("../public/font/FiraSans-Regular.ttf");
   font-weight: normal;
 }
 
 @font-face {
   font-family: fontTen;
-  src: url("../public/font/Almarai-Bold.ttf");
-  font-weight: 700;
+  src: url("../public/font/FiraSans-Medium.ttf");
+  font-weight: 500;
 }
 
 @font-face {
   font-family: fontTen;
-  src: url("../public/font/Almarai-ExtraBold.ttf");
-  font-weight: 900;
+  src: url("../public/font/FiraSans-Bold.ttf");
+  font-weight: 700;
 }
 
 /* ==== custom fonts ====*/
