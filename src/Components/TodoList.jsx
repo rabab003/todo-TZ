@@ -14,49 +14,22 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Todo from './Todo';
 import { Grid } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import {v4 as idNumb} from 'uuid'
 import { useState } from 'react';
+import { useContext } from 'react';
+import { TodosContext } from '../Context/TodoContext';
+import {v4 as idNumb} from 'uuid'
+ 
 
-const todosIni = [
-  { 
-    id:idNumb(),
-    title: "task 1",
-    details:"loremmmmmmmmmmmmm",
-    isCompleted: false
 
-  },
-  { 
-    id:idNumb(),
-    title: "task 2",
-    details:"loremmmmmmmmmmmmm",
-    isCompleted: false
-
-  },
-  { 
-    id:idNumb(),
-    title: "task 3",
-    details:"loremmmmmmmmmmmmm",
-    isCompleted: false
-
-  },
-]
 
 export default function TodoList() {
-  const [todos , setTodos] = useState(todosIni);
+
+  const {todos,setTodos} = useContext(TodosContext)
   const [titleInput , setTitleInput] = useState("")
 
-  function handleCheckClick(id){
-    const updatedTodos = todos.map((t)=>{
-      if(t.id == id){
-        t.isCompleted = !t.isCompleted
-      }
-      return t;
-    })
-    setTodos(updatedTodos)
-   }
    
-  const todosJsx = todos.map((t)=>{
-    return <Todo key={t.id} handelCheck={handleCheckClick} todo={t}/>
+  const todosJsx = todos.map((t) =>{
+    return <Todo key={t.id} todo={t}/>
   })
 
   function handelAddClick(){

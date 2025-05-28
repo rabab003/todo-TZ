@@ -11,13 +11,27 @@ import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
+import { TodosContext } from '../Context/TodoContext';
+import { useContext } from 'react';
+
+export default function Todo({todo}) {
 
 
-export default function Todo({todo, handelCheck}) {
-  function handelCheckClick(){
-    handelCheck(todo.id)
+     const {todos , setTodos} = useContext(TodosContext);
+  
+  
+     function handelCheckClick(){
+      console.log("clicked")
+        const updatedTodos = todos.map((t)=>{
+      if(t.id == todos.id){
+        t.isCompleted = !t.isCompleted
+      }
+      return t;
+    })
+    setTodos(updatedTodos)
 
-  }
+  } 
+
   return (
     <div>
           <Card className='todoCard' sx={{minWidth:275,  color:"white", marginTop:5}} variant="outlined">
