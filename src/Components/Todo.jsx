@@ -20,6 +20,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 const open = false
 export default function Todo({todo}) {
@@ -27,14 +28,37 @@ export default function Todo({todo}) {
 
      const {todos , setTodos} = useContext(TodosContext);
      const[showDeleteDialog , setShowDeleteDialog] = useState(false)
+     const[showUpdateDialog , setShowUpdateDialog] = useState(false)
+     const [updateTodo, setUpdateTodo] = useState({title: todo.title, details:todo.details})
   
     // event handlers
     function handelDeleteClick(){
       setShowDeleteDialog(true)
     }
-    function handleClose(){
+    function handelUpdateClick(){
+      setShowUpdateDialog(true)
+    }
+    function handleDeleteClose(){
       setShowDeleteDialog(false)
     }
+    function handleUpdateClose(){
+      setShowUpdateDialog(false)
+    }
+
+   function handleUpdateConfirm(){
+const updatedTodos = todos.map((t)=>{
+  if(t.id == todo.id){
+    return{...t, title:updateTodo.title, details:updateTodo.details}
+  }else{
+    return t
+  }
+}) 
+setTodos(updatedTodos)
+setShowUpdateDialog(false)
+
+
+  
+   }
 
 
      function handelCheckClick(){
@@ -47,24 +71,23 @@ export default function Todo({todo}) {
     })
     setTodos(updatedTodos)
 
-  } 
+    } 
 
      function handelDeleteConfirm(){
       const updateTodos = todos.filter((t)=>{
         return t.id != todo.id
-
       })
       setTodos(updateTodos)
 
   
-  } 
+    } 
 
   return (
     <div>
       {/* delete modal */}
       <Dialog
         open={showDeleteDialog}
-        // onClose={handleClose}
+        onClose={handleDeleteClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -78,7 +101,7 @@ export default function Todo({todo}) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>close</Button>
+          <Button onClick={handleDeleteClose}>close</Button>
           <Button onClick={handelDeleteConfirm} style={{color:"red", background:"red"}} autoFocus>
             delete
           </Button>
@@ -87,12 +110,65 @@ export default function Todo({todo}) {
       {/*========== delete modal ==========*/}
 
 
+      {/* edit modal */}
+      <Dialog
+        open={showUpdateDialog}
+        onClose={handleUpdateClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+        edit task        
+        </DialogTitle>
+        
+        <DialogContent>
+          <TextField
+          value={updateTodo.title}
+          onChange={(e)=>{
+            setUpdateTodo({...updateTodo, title:e.target.value})
+          }}
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="text"
+            label=" task title"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+          value={updateTodo.details}
+          onChange={(e)=>{
+            setUpdateTodo({...updateTodo, details:e.target.value})
+          }}
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="text"
+            label=" task details"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUpdateClose}>close</Button>
+          <Button onClick={handleUpdateConfirm} style={{color:"red", background:"red"}} autoFocus>
+            edit
+          </Button>
+        </DialogActions>
 
-          <Card className='todoCard' sx={{minWidth:275,  color:"white", marginTop:5}} variant="outlined">
-                  <CardContent>
-                    <Grid container spacing={1}>
+      </Dialog>
+      {/*========== edit modal ==========*/}
 
-                       <Grid  size={8}>
+
+
+        <Card className='todoCard' sx={{minWidth:275,  color:"white", marginTop:5}} variant="outlined">
+                <CardContent>
+                  <Grid container spacing={1}>
+                     <Grid  size={8}>
                        <Typography style={{textAlign:"left"}} variant='h5' gutterBottom>{todo.title}</Typography>
                        <Typography style={{textAlign:"right"}} variant='h7' gutterBottom>{todo.details}</Typography>
                             
@@ -109,24 +185,31 @@ export default function Todo({todo}) {
                               background:todo.isCompleted ?"black": "White",
                               // color:"#8bc34a",
                               color:todo.isCompleted ? "#8bc34a": "White",
-
                               border:"solid #8bc34a 3px "
-                              
                               }}>
                             
-                               <CheckIcon />
+                              <CheckIcon />
                             </IconButton>
-                            <IconButton className='iconBtn' aria-label="delete" style={{color:"blue",border:"solid blue 3px "}}>
+
+                            {/* edit button */}
+                            <IconButton 
+                            onClick={handelUpdateClick}
+                            className='iconBtn' 
+                            aria-label="delete" 
+                            style={{color:"blue",border:"solid blue 3px "}}>
                                <EditIcon />
                             </IconButton>
+                            {/* ======= edit button ========*/}
+
+
                             <IconButton className='iconBtn' aria-label="delete" style={{color:"red",border:"solid red 3px "}}
                             onClick={handelDeleteClick}>
                                <DeleteIcon />
                             </IconButton>                     
                          </Grid>
                     </Grid>
-                  </CardContent>
-            </Card>
+          </CardContent>
+        </Card>
     </div>
   )
 }
