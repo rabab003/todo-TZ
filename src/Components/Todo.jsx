@@ -53,8 +53,10 @@ const updatedTodos = todos.map((t)=>{
     return t
   }
 }) 
+
 setTodos(updatedTodos)
 setShowUpdateDialog(false)
+ localStorage.setItem("todos", JSON.stringify(updatedTodos))
 
 
   
@@ -70,16 +72,17 @@ setShowUpdateDialog(false)
       return t;
     })
     setTodos(updatedTodos)
+    localStorage.setItem("todos", JSON.stringify(updatedTodos))
 
     } 
 
      function handelDeleteConfirm(){
-      const updateTodos = todos.filter((t)=>{
+      const updatedTodos = todos.filter((t)=>{
         return t.id != todo.id
       })
-      setTodos(updateTodos)
+      setTodos(updatedTodos)
+      localStorage.setItem("todos", JSON.stringify(updatedTodos))
 
-  
     } 
 
   return (
