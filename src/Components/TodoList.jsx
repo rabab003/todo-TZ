@@ -25,20 +25,45 @@ export default function TodoList() {
 
   const {todos,setTodos} = useContext(TodosContext)
   const [titleInput , setTitleInput] = useState("")
+  const [displayedTodosType , setDisplayedTodosType]=useState("all")
 
    
-  const todosJsx = todos.map((t) =>{
+  const completedTodos = todos.filter((t)=>{
+    return t.isCompleted
+  })  
+  const notCompletedTodos = todos.filter((t)=>{
+    return !t.isCompleted
+  })  
+ 
+  let todosToBeRendered = todos
+
+  if(displayedTodosType == "completed"){
+    todosToBeRendered = completedTodos
+  }else if(displayedTodosType == "non-completed"){
+    todosToBeRendered = notCompletedTodos
+  }else{
+    todosToBeRendered = todos
+  }
+  
+  const todosJsx = todosToBeRendered.map((t) =>{
     return <Todo key={t.id} todo={t}/>
   })
+
+
+
+  function handleAlignment(e){
+    console.log("hi")
+    setDisplayedTodosType(e.target.value)
+  }
+
 
   useEffect(()=>{
     console.log("useEffect is running")
     const storageTodos = JSON.parse(localStorage.getItem("todos"));
     setTodos(storageTodos)
-  },[])
+  }, [])
 
   function handelAddClick(){
-
   const newTodo={
     id:idNumb(),
     title: titleInput,
@@ -57,23 +82,30 @@ export default function TodoList() {
   return (
     <>
       <Container maxWidth="sm">
-              <Card variant="outlined" sx={{ minWidth: 275 }} style={{color:"white"}}>
+              <Card variant="outlined" sx={{ minWidth: 275 }} style={{maxHeight:"80vh", overflowBlock:"scroll"}}>
                   <CardContent>
                        <Typography variant='h4' gutterBottom>my tasks</Typography>
                        <Divider style={{color:"white"}} />
 
                        {/* filter button */}
                            <ToggleButtonGroup 
-                                  // value={alignment}
+                                  value={displayedTodosType}
+                                  onChange={handleAlignment}
                                   exclusive
                                    aria-label="text alignment">
-                                  <ToggleButton value="left" style={{fontFamily:"fontTen", fontWeight:'normal'}}>
+
+                                  <ToggleButton value="all" 
+                                  style={{fontFamily:"fontTen", fontWeight:'normal'}}>
                                     all
                                   </ToggleButton>
-                                  <ToggleButton value="center" style={{fontFamily:"fontTen", fontWeight:'normal'}}>
+                                  <ToggleButton value="done" 
+                                  style={{fontFamily:"fontTen", fontWeight:'normal'}}>
                                     done
                                   </ToggleButton>
-                                  <ToggleButton style={{fontFamily:"fontTen", fontWeight:'normal'}} value="right">
+                                  <ToggleButton value="not-yet" 
+                                  style={{fontFamily:"fontTen", 
+                                    fontWeight:'normal'}} 
+                                   >
                                     not yet
                                   </ToggleButton>
                                   
@@ -122,6 +154,7 @@ export default function TodoList() {
                                   onClick={()=>{
                                     handelAddClick()
                                   }}
+                                  disabled={titleInput.length == 0}
                                 >
                                   add
                                 </Button>

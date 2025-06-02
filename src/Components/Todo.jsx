@@ -57,15 +57,12 @@ const updatedTodos = todos.map((t)=>{
 setTodos(updatedTodos)
 setShowUpdateDialog(false)
  localStorage.setItem("todos", JSON.stringify(updatedTodos))
+}
 
 
-  
-   }
-
-
-     function handelCheckClick(){
+function handelCheckClick(){
       console.log("clicked")
-        const updatedTodos = todos.map((t)=>{
+      const updatedTodos = todos.map((t)=>{
       if(t.id == todos.id){
         t.isCompleted = !t.isCompleted
       }
@@ -74,16 +71,16 @@ setShowUpdateDialog(false)
     setTodos(updatedTodos)
     localStorage.setItem("todos", JSON.stringify(updatedTodos))
 
-    } 
+} 
 
-     function handelDeleteConfirm(){
+function handelDeleteConfirm(){
       const updatedTodos = todos.filter((t)=>{
         return t.id != todo.id
       })
       setTodos(updatedTodos)
       localStorage.setItem("todos", JSON.stringify(updatedTodos))
 
-    } 
+} 
 
   return (
     <div>
@@ -172,7 +169,7 @@ setShowUpdateDialog(false)
                 <CardContent>
                   <Grid container spacing={1}>
                      <Grid  size={8}>
-                       <Typography style={{textAlign:"left"}} variant='h5' gutterBottom>{todo.title}</Typography>
+                       <Typography style={{textAlign:"left", textDecoration:"line-through"}} variant='h5' gutterBottom >{todo.title}</Typography>
                        <Typography style={{textAlign:"right"}} variant='h7' gutterBottom>{todo.details}</Typography>
                             
                          </Grid>
