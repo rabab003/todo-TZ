@@ -9,31 +9,40 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Todo from './Todo';
 import { Grid } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect , useMemo} from 'react';
 import { TodosContext } from '../Context/TodoContext';
 import {v4 as idNumb} from 'uuid'
  
-
-
-
 export default function TodoList() {
 
   const {todos,setTodos} = useContext(TodosContext)
+  const[showDeleteDialog , setShowDeleteDialog] = useState(false)
   const [titleInput , setTitleInput] = useState("")
   const [displayedTodosType , setDisplayedTodosType]=useState("all")
 
    
-  const completedTodos = todos.filter((t)=>{
+  const completedTodos =  useMemo(()=>{
+    return todos.filter((t)=>{
     return t.isCompleted
   })  
-  const notCompletedTodos = todos.filter((t)=>{
+  },[todos])
+ 
+   const notCompletedTodos = useMemo(()=>{
+    return todos.filter((t)=>{
     return !t.isCompleted
   })  
+   },[todos]) 
+   
  
   let todosToBeRendered = todos
 
@@ -50,16 +59,14 @@ export default function TodoList() {
   })
 
 
-
   function handleAlignment(e){
     console.log("hi")
     setDisplayedTodosType(e.target.value)
   }
 
-
   useEffect(()=>{
     console.log("useEffect is running")
-    const storageTodos = JSON.parse(localStorage.getItem("todos"));
+    const storageTodos = JSON.parse(localStorage.getItem("todos")) || [];
     setTodos(storageTodos)
   }, [])
 
@@ -81,6 +88,87 @@ export default function TodoList() {
 
   return (
     <>
+
+            {/* delete modal */}
+            <Dialog
+              open={showDeleteDialog}
+              onClose={handleDeleteClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Use Google's location service?"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Let Google help apps determine location. This means sending anonymous
+                  location data to Google, even when no apps are running.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleDeleteClose}>close</Button>
+                <Button onClick={handelDeleteConfirm} style={{color:"red", background:"red"}} autoFocus>
+                  delete
+                </Button>
+              </DialogActions>
+            </Dialog>
+            {/*========== delete modal ==========*/}
+             
+             
+              {/* edit modal */}
+              <Dialog
+        open={showUpdateDialog}
+        onClose={handleUpdateClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+        edit task        
+        </DialogTitle>
+        
+        <DialogContent>
+          <TextField
+          value={updateTodo.title}
+          onChange={(e)=>{
+            setUpdateTodo({...updateTodo, title:e.target.value})
+          }}
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="text"
+            label=" task title"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+          value={updateTodo.details}
+          onChange={(e)=>{
+            setUpdateTodo({...updateTodo, details:e.target.value})
+          }}
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="text"
+            label=" task details"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUpdateClose}>close</Button>
+          <Button onClick={handleUpdateConfirm} style={{color:"red", background:"red"}} autoFocus>
+            edit
+          </Button>
+        </DialogActions>
+
+              </Dialog>
+             {/*========== edit modal ==========*/}
+
+
       <Container maxWidth="sm">
               <Card variant="outlined" sx={{ minWidth: 275 }} style={{maxHeight:"80vh", overflowBlock:"scroll"}}>
                   <CardContent>
@@ -113,15 +201,6 @@ export default function TodoList() {
                        {/* ====== filter button ======*/}
                        {todosJsx} 
 
-                       {/* <Grid Container display={'flex'}> 
-                        <Grid style={{background:"green"}} xs={8} justifyContent="space-around" alignItems="center">
-                          ggg
-                        </Grid>
-                        <Grid style={{background:"red"}}  xs={4}  justifyContent="space-around" alignItems="center">
-                          ggg
-                        </Grid>
-
-                       </Grid> */}
 
                         <Grid container style={{ marginTop: "20px" }} spacing={2}>
                               <Grid
@@ -159,7 +238,7 @@ export default function TodoList() {
                                   add
                                 </Button>
                               </Grid>
-                            </Grid>
+                        </Grid>
           {/*== INPUT + ADD BUTTON ==*/}
                   </CardContent>
               </Card>
