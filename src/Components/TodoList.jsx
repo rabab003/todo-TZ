@@ -18,7 +18,8 @@ import { useState, useContext, useEffect, useMemo } from 'react';
 import { TodosContext } from '../Context/TodoContext';
 import {v4 as idNumb} from 'uuid';
 
-import {ToastContext} from "../Context/ToastContext"
+import {  useToast } from '../Context/ToastContext';
+
 
 export default function TodoList() {
   const {todos, setTodos} = useContext(TodosContext);
@@ -28,7 +29,7 @@ export default function TodoList() {
   const [todoToUpdate, setTodoToUpdate] = useState(null);
   const [updateTodo, setUpdateTodo] = useState({title: "", details: ""});
 
-  const {showHideToast} = useContext(ToastContext)
+  const {showHideToast} = useToast()
 
   const completedTodos = useMemo(() => {
     return todos.filter((t) => t.isCompleted);
