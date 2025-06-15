@@ -14,20 +14,25 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Todo from './Todo';
 import { Grid } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { useState, useContext, useEffect, useMemo } from 'react';
+import { useState, useContext, useEffect, useMemo, useReducer } from 'react';
 import { TodosContext } from '../Context/TodoContext';
 import {v4 as idNumb} from 'uuid';
+
+import todosReducer from "../reducer/todosReducer"
 
 import {  useToast } from '../Context/ToastContext';
 
 
 export default function TodoList() {
-  const {todos, setTodos} = useContext(TodosContext);
+  const {todos2, setTodos} = useContext(TodosContext);
   const [titleInput, setTitleInput] = useState("");
   const [displayedTodosType, setDisplayedTodosType] = useState("all");
   const [todoToDelete, setTodoToDelete] = useState(null);
   const [todoToUpdate, setTodoToUpdate] = useState(null);
   const [updateTodo, setUpdateTodo] = useState({title: "", details: ""});
+   
+  // use reducer
+  const [todos, dispatch ] = useReducer(todosReducer,[])
 
   const {showHideToast} = useToast()
 
@@ -56,21 +61,13 @@ export default function TodoList() {
   }, []);
 
   function handelAddClick() {
-    const newTodo = {
-      id: idNumb(),
-      title: titleInput,
-      details: "",
-      isCompleted: false
-    };
-
-    const updateTodos = [...todos, newTodo];
-    setTodos(updateTodos);
-    localStorage.setItem("todos", JSON.stringify(updateTodos));
+    dispatch({type:"added", payload:{newTitle:setTitleInput}})
     setTitleInput("");
     showHideToast("add successfully")
+ 
   }
 
-  function showDelete(todo) {
+  function showDelete(todo) { 
     setTodoToDelete(todo);
   }
 
