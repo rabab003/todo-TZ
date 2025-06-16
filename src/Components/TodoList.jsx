@@ -16,11 +16,11 @@ import { Grid } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useState, useContext, useEffect, useMemo, useReducer } from "react";
 import { TodosContext } from "../Context/TodoContext";
-import { v4 as idNumb } from "uuid";
 
-import todosReducer from "../reducer/todosReducer";
+// import todosReducer from "../reducer/todosReducer";
 
 import { useToast } from "../Context/ToastContext";
+import { useTodos } from "../Context/TodoContext";
 
 export default function TodoList() {
   const [titleInput, setTitleInput] = useState("");
@@ -30,9 +30,8 @@ export default function TodoList() {
   const [updateTodo, setUpdateTodo] = useState({ title: "", details: "" });
 
   // use reducer
-  const [todos, dispatch] = useReducer(todosReducer, []);
-
-  const { showHideToast } = useToast();
+  const { todos, dispatch } = useContext(TodosContext);
+  const { showHideToast } = useTodos();
 
   const completedTodos = useMemo(() => {
     return todos.filter((t) => t.isCompleted);

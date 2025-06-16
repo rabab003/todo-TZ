@@ -39,6 +39,17 @@ export default function reducer(currentTodos, action) {
       return updatedTodos;
     }
 
+    case "toggleCompleted": {
+      const updatedTodos = currentTodos.map((t) => {
+        if (t.id === action.payload.id) {
+          return { ...t, isCompleted: !t.isCompleted };
+        }
+        return t;
+      });
+      localStorage.setItem("todos", JSON.stringify(updatedTodos));
+      return updatedTodos;
+    }
+
     case "get": {
       const storageTodos = JSON.parse(localStorage.getItem("todos")) || [];
       return storageTodos;
