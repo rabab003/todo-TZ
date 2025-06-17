@@ -7,14 +7,11 @@ import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { TodosContext } from "../Context/TodoContext";
 import { useTodos } from "../Context/TodoContext";
 
 import { useToast } from "../Context/ToastContext";
 
 export default function Todo({ todo, showDelete, showUpdate }) {
-  // const { todos, setTodos } = useContext(TodosContext);
-
   const { showHideToast } = useToast();
   const { todos, dispatch } = useTodos();
 

@@ -42,7 +42,11 @@ export default function reducer(currentTodos, action) {
     case "toggleCompleted": {
       const updatedTodos = currentTodos.map((t) => {
         if (t.id === action.payload.id) {
-          return { ...t, isCompleted: !t.isCompleted };
+          const updatedTodo = {
+            ...t,
+            isCompleted: !t.isCompleted,
+          };
+          return updatedTodo;
         }
         return t;
       });
